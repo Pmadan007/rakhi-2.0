@@ -1,34 +1,25 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const roomId = urlParams.get("room");
-  const role = urlParams.get("role") || "sister";
+import { HMSReactiveStore, HMSRoom } from "@100mslive/hms-video";
 
-  console.log(`🚀 Starting Rakhi call: room=${roomId}, role=${role}`);
+// Get room ID from URL
+const roomId = new URLSearchParams(window.location.search).get("roomId");
 
-  if (!roomId || !role) {
-    alert("Missing room or role in URL");
-    return;
-  }
+// Fetch token from backend
+async function getToken(roomId) {
+  const res = await fetch(`/api/getToken?roomId=${roomId}`);
+  const data = await res.json();
+  return data.token;
+}
 
-  // ✅ Step 1: Get Token from Netlify Function
-  const tokenUrl = `/.netlify/functions/getToken?roomId=${roomId}&role=${role}`;
-  let token;
-  try {
-    const res = await fetch(tokenUrl);
-    const data = await res.json();
-    token = data.token;
-    console.log("✅ Got token");
-  } catch (err) {
-    console.error("❌ Error fetching token", err);
-    return;
-  }
+// Initialize 100ms
+(async () => {
+  const token = await getToken(roomId);
 
-  // ✅ Step 2: Setup HMS
-  const hmsStore = new window.HMSReactiveStore.HMSStore();
-  const hmsActions = new window.HMSReactiveStore.HMSActions(hmsStore);
+  const store = new HMSReactiveStore();
+  const hmsActions = store.getHMSActions();
+  const hmsStore = store.getStore();
 
   await hmsActions.join({
-    userName: role === "sister" ? "Sister 👧" : "Brother 🧑‍🦱",
+    userName: "Sibling",
     authToken: token,
     settings: {
       isAudioMuted: false,
@@ -36,40 +27,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     },
   });
 
-  // ✅ Step 3: Subscribe to peers and render
-  const renderVideo = () => {
-    const peers = hmsStore.getState((state) => state.peers);
-    const localVideo = document.getElementById("local-video");
-    const remoteVideo = document.getElementById("remote-video");
-
-    localVideo.innerHTML = "";
-    remoteVideo.innerHTML = "";
-
-    peers.forEach((peer) => {
-      const videoEl = document.createElement("video");
-      videoEl.autoplay = true;
-      videoEl.playsInline = true;
-      videoEl.muted = peer.isLocal;
-
-      hmsActions.attachVideo(peer.id, videoEl);
-
-      const wrapper = document.createElement("div");
-      wrapper.className = "peer-wrapper";
-
-      const nameTag = document.createElement("div");
-      nameTag.className = "peer-name";
-      nameTag.innerText = peer.name;
-
-      wrapper.appendChild(videoEl);
-      wrapper.appendChild(nameTag);
-
-      if (peer.isLocal) {
-        localVideo.appendChild(wrapper);
-      } else {
-        remoteVideo.appendChild(wrapper);
+  // Subscribe to peer updates
+  hmsStore.subscribe(peers => {
+    const container = document.getElementById("video-container");
+    container.innerHTML = ""; // Clear old videos
+    peers.forEach(peer => {
+      if (peer.videoTrack) {
+        const video = document.createElement("video");
+        video.autoplay = true;
+        video.playsInline = true;
+        video.muted = peer.isLocal;
+        hmsActions.attachVideo(peer.videoTrack, video);
+        container.appendChild(video);
       }
     });
-  };
-
-  hmsStore.subscribe(renderVideo, (state) => state.peers);
-});
+  }, store.selectPeers);
+})();

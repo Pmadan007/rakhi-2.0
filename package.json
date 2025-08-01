@@ -2,6 +2,7 @@
   "name": "rakhi-app",
   "version": "1.0.0",
   "dependencies": {
+    "@100mslive/hms-video": "^0.9.28",
     "axios": "^1.6.8",
     "jsonwebtoken": "^9.0.2",
     "node-fetch": "^2.7.0"
