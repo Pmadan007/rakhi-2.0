@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Celebrate Rakhi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background"></div>
+
+  <div class="container">
+    <button class="img-button" id="invite-btn">
+      <img src="assets/invite-btn.png" alt="Invite Your Sibling" />
+    </button>
+
+    <div class="invite-section hidden" id="invite-section">
+      <div class="link-copy">
+        <input type="text" id="invite-link" readonly />
+        <button id="copy-btn">Copy</button>
+      </div>
+      <button class="img-button hidden" id="start-btn">
+        <img src="assets/start-btn.png" alt="Start Celebration" />
+      </button>
+    </div>
+
+    <pre id="debug" style="color: white; font-size: 14px;"></pre>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

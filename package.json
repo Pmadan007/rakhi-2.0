@@ -1,0 +1,9 @@
+{
+  "name": "rakhi-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.0",
+    "node-fetch": "^2.6.9",
+    "axios": "^1.6.8"
+  }
+}
