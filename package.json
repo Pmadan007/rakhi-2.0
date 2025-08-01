@@ -2,8 +2,24 @@
   "name": "rakhi-app",
   "version": "1.0.0",
   "dependencies": {
-    "jsonwebtoken": "^9.0.0",
-    "node-fetch": "^2.6.9",
-    "axios": "^1.6.8"
-  }
+    "axios": "^1.6.8",
+    "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^2.7.0"
+  },
+  "main": "call.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pmadan007/rakhi-2.0.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pmadan007/rakhi-2.0/issues"
+  },
+  "homepage": "https://github.com/Pmadan007/rakhi-2.0#readme",
+  "description": ""
 }
