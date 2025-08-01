@@ -1,21 +1,3 @@
-const joinBtn = document.getElementById("join-btn");
-const nameInput = document.getElementById("name");
-const videoContainer = document.getElementById("video-container");
-const joinScreen = document.getElementById("join-screen");
-
-joinBtn.addEventListener("click", async () => {
-  const userName = nameInput.value || "Guest";
-  const urlParams = new URLSearchParams(window.location.search);
-  const roomId = urlParams.get("room");
-
-  const res = await fetch("/.netlify/functions/generateToken", {
-    method: "POST",
-    body: JSON.stringify({
-      user_id: userName,
-      role: "host",
-      room_id: roomId
-    })
-  });
 
   const { token } = await res.json();
 
