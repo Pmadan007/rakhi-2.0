@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const room_name = "rakhi_" + Math.random().toString(36).substring(2, 10);
 
     try {
-      const res = await fetch("/.netlify/functions/createRoom", {
+      const res = await fetch("/api/createRoom", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,4 +62,5 @@ document.addEventListener("DOMContentLoaded", () => {
       log("❌ No roomId found!");
     }
   });
+});
 });
