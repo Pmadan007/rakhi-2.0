@@ -1,15 +1,16 @@
-const jwt = require("jsonwebtoken");
-const fetch = require("node-fetch");
+import jwt from "jsonwebtoken";
+import fetch from "node-fetch";
 
-exports.handler = async function (event) {
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
+
   try {
-    const { room_name } = JSON.parse(event.body || "{}");
+    const { room_name } = req.body;
 
     if (!room_name) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "Missing room_name" }),
-      };
+      return res.status(400).json({ error: "Missing room_name" });
     }
 
     const accessKey = "688ba7bbbd0dab5f9a013465";
@@ -44,23 +45,17 @@ exports.handler = async function (event) {
     const data = await response.json();
 
     if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: "Room creation failed", details: data }),
-      };
+      return res
+        .status(response.status)
+        .json({ error: "Room creation failed", details: data });
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data),
-    };
+    return res.status(200).json(data);
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: "Unexpected server error",
-        message: error.message,
-      }),
-    };
+    return res.status(500).json({
+      error: "Unexpected server error",
+      message: error.message,
+    });
   }
-};
+}
+
