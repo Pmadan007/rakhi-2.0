@@ -9,12 +9,10 @@
     "vite": "^7.0.6"
   },
   "main": "call.js",
-  "scripts":
-  {
+  "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
-  } {
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
