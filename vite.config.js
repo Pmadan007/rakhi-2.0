@@ -1,12 +1,7 @@
-import { defineConfig } from 'vite';
-
-export default defineConfig({
+// vite.config.js
+export default {
+  root: ".",
   build: {
-    rollupOptions: {
-      input: {
-        main: 'index.html',
-        call: 'call.html',
-      },
-    },
+    outDir: "dist",
   },
-});
+};
